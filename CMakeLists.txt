@@ -23,6 +23,8 @@ add_executable(main
     src/MainMenu.cpp
     src/GamePlay.cpp
     src/Snake.cpp
+    src/GameOver.cpp
+    src/PauseGame.cpp
     # add other .cpp files as needed
 )
 target_compile_features(main PRIVATE cxx_std_20)

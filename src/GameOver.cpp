@@ -1,35 +1,33 @@
-#include "MainMenu.h"
+#include "GameOver.h"
 #include "GamePlay.h"
 
-MainMenu::MainMenu(std::shared_ptr<Context>& context)
-: m_context {context}
-, m_isPlayButtonSelected {true}, m_isPlayButtonPressed {false}
-, m_isExitButtonSelected {false}, m_isExitButtonPressed {false}
 
+GameOver::GameOver(std::shared_ptr<Context>& context)
+: m_context (context)
+, m_isPlayButtonSelected (true), m_isPlayButtonPressed (false)
+, m_isExitButtonSelected (false), m_isExitButtonPressed (false)
 {
 
 }
 
-MainMenu::~MainMenu()
-{
 
-}
+ GameOver::~GameOver()
+ {
 
-void MainMenu::Init() 
+ }
+
+void GameOver::Init()
 {
     std::string fontPath = "assets/fonts/Bitcount_Grid_Double/BitcountGridDouble.ttf";
     m_context->m_assets->AddFont(MAIN_FONT, fontPath);
 
     const sf::Font& font = m_context->m_assets->getFont(MAIN_FONT);
 
-    // Game Title
-    m_gameTitle = sf::Text(font, "Main Menu", 30);
-    m_gameTitle->setFont(font);
-    m_gameTitle->setString("Snake Game");
-    
+    m_gameTitle = sf::Text(font, "GAME OVER", 50);
+
     sf::FloatRect bounds = m_gameTitle->getLocalBounds();
 
-    m_gameTitle->setOrigin(sf::Vector2f(
+     m_gameTitle->setOrigin(sf::Vector2f(
         bounds.position.x + bounds.size.x / 2.f,
         bounds.position.y + bounds.size.y / 2.f
     ));
@@ -40,49 +38,42 @@ void MainMenu::Init()
         m_context->m_window->getSize().y / 2.0f - 150.f
     ));
 
-    // Play Button
-    m_playButton = sf::Text(font, "Play", 20);
-    m_playButton->setFont(font);
-    m_playButton->setString("Play");
 
-    sf::FloatRect play_bounds = m_playButton->getLocalBounds();
-    
+    m_playButton = sf::Text(font, "Retry", 30);
 
-    m_playButton->setOrigin(sf::Vector2f(
-        play_bounds.position.x + play_bounds.size.x / 2.f,
-        play_bounds.position.y + play_bounds.size.y / 2.f 
-    ));
+    bounds = m_playButton->getLocalBounds();
 
+    m_playButton->setOrigin({
+        bounds.position.x + bounds.size.x / 2.f ,
+        bounds.position.y + bounds.size.y/2.f
+    });
 
-    m_playButton->setPosition(sf::Vector2f(
-        m_context->m_window->getSize().x / 2.0f,
-        m_context->m_window->getSize().y / 2.0f - 25.f
-    ));
-
-    // Exit Button
-    m_exitButton = sf::Text(font, "Exit", 20);
-    m_exitButton->setFont(font);
-    m_exitButton->setString("Exit");
-    
-    sf::FloatRect exit_bounds = m_exitButton->getLocalBounds();
-
-    m_exitButton->setOrigin(sf::Vector2f(
-        exit_bounds.position.x + exit_bounds.size.x / 2.f,
-        exit_bounds.position.y + exit_bounds.size.y / 2.f
-    ));
+    m_playButton->setPosition({
+        static_cast<float>(Config::SCREEN_WIDTH) / 2.f,
+        static_cast<float>(Config::SCREEN_HEIGHT) / 2.f - 25.f,
+    });
 
 
-    m_exitButton->setPosition(sf::Vector2f(
-        m_context->m_window->getSize().x / 2.0f,
-        m_context->m_window->getSize().y / 2.0f + 25.f
-    ));
-    
+     m_exitButton = sf::Text(font, "Exit", 30);
+
+    bounds = m_exitButton->getLocalBounds();
+
+    m_exitButton->setOrigin({
+        bounds.position.x + bounds.size.x / 2.f ,
+        bounds.position.y + bounds.size.y/2.f
+    });
+
+    m_exitButton->setPosition({
+        static_cast<float>(Config::SCREEN_WIDTH) / 2.f,
+        static_cast<float>(Config::SCREEN_HEIGHT) / 2.f + 25.f,
+    });
+
 }
 
 
-void MainMenu::ProcessInput() 
+void GameOver::ProcessInput()
 {
-    while (const std::optional<sf::Event> event = m_context->m_window->pollEvent())
+     while (const std::optional<sf::Event> event = m_context->m_window->pollEvent())
     {
         if(event->is<sf::Event::Closed>())
             m_context->m_window->close();
@@ -127,7 +118,7 @@ void MainMenu::ProcessInput()
 }
 
 
-void MainMenu::Update(sf::Time deltaTime) 
+void GameOver::Update(sf::Time deltaTime)
 {
     if (m_isPlayButtonSelected)
     {
@@ -142,8 +133,7 @@ void MainMenu::Update(sf::Time deltaTime)
 
     if (m_isPlayButtonPressed)
     {
-        m_isPlayButtonPressed = false; 
-        m_context->m_states->Add(std::make_unique<GamePlay>(m_context), false);
+        m_context->m_states->Add(std::make_unique<GamePlay>(m_context), true);
 
     }
 
@@ -154,7 +144,7 @@ void MainMenu::Update(sf::Time deltaTime)
 }
 
 
-void MainMenu::Draw() 
+void GameOver::Draw() 
 {
     m_context->m_window->clear(sf::Color::Green);
     m_context->m_window->draw(*m_gameTitle);
@@ -162,3 +152,6 @@ void MainMenu::Draw()
     m_context->m_window->draw(*m_exitButton);
     m_context->m_window->display();
 }
+
+
+

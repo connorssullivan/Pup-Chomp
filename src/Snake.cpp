@@ -70,13 +70,19 @@ void Snake::Move(const sf::Vector2f& direction)
 
 bool Snake::IsOn(const sf::Sprite& other) const
 {
-    // Implement if needed
-    return false;
+    
+    return other.getGlobalBounds().findIntersection(m_head->value().getGlobalBounds()).has_value();
 }
 
 void Snake::Grow(const sf::Vector2f& direction)
 {
-    // Implement if needed
+    if (!m_tail->has_value()) 
+        return;
+
+    sf::Sprite newPiece(m_body.begin()->value().getTexture());
+    newPiece.setPosition(m_tail->value().getPosition() - direction);
+
+    m_tail = m_body.insert(m_tail, newPiece);
 }
 
 void Snake::draw(sf::RenderTarget& target, sf::RenderStates states) const

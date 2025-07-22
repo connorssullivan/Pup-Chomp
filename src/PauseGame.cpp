@@ -1,21 +1,20 @@
-#include "MainMenu.h"
-#include "GamePlay.h"
+#include "PauseGame.h"
 
-MainMenu::MainMenu(std::shared_ptr<Context>& context)
+
+PauseGame::PauseGame(std::shared_ptr<Context>& context)
 : m_context {context}
 , m_isPlayButtonSelected {true}, m_isPlayButtonPressed {false}
 , m_isExitButtonSelected {false}, m_isExitButtonPressed {false}
-
 {
 
 }
 
-MainMenu::~MainMenu()
+PauseGame::~PauseGame()
 {
 
 }
 
-void MainMenu::Init() 
+void PauseGame::Init() 
 {
     std::string fontPath = "assets/fonts/Bitcount_Grid_Double/BitcountGridDouble.ttf";
     m_context->m_assets->AddFont(MAIN_FONT, fontPath);
@@ -23,9 +22,9 @@ void MainMenu::Init()
     const sf::Font& font = m_context->m_assets->getFont(MAIN_FONT);
 
     // Game Title
-    m_gameTitle = sf::Text(font, "Main Menu", 30);
+    m_gameTitle = sf::Text(font, "Pause", 30);
     m_gameTitle->setFont(font);
-    m_gameTitle->setString("Snake Game");
+
     
     sf::FloatRect bounds = m_gameTitle->getLocalBounds();
 
@@ -41,9 +40,8 @@ void MainMenu::Init()
     ));
 
     // Play Button
-    m_playButton = sf::Text(font, "Play", 20);
+    m_playButton = sf::Text(font, "Resume", 20);
     m_playButton->setFont(font);
-    m_playButton->setString("Play");
 
     sf::FloatRect play_bounds = m_playButton->getLocalBounds();
     
@@ -62,7 +60,6 @@ void MainMenu::Init()
     // Exit Button
     m_exitButton = sf::Text(font, "Exit", 20);
     m_exitButton->setFont(font);
-    m_exitButton->setString("Exit");
     
     sf::FloatRect exit_bounds = m_exitButton->getLocalBounds();
 
@@ -80,7 +77,7 @@ void MainMenu::Init()
 }
 
 
-void MainMenu::ProcessInput() 
+void PauseGame::ProcessInput() 
 {
     while (const std::optional<sf::Event> event = m_context->m_window->pollEvent())
     {
@@ -106,6 +103,7 @@ void MainMenu::ProcessInput()
                     m_isPlayButtonSelected = false;
                 }
                 break;
+
             case sf::Keyboard::Key::Enter:
                 m_isPlayButtonPressed = false;
                 m_isExitButtonPressed = false;
@@ -113,11 +111,16 @@ void MainMenu::ProcessInput()
                 if (m_isPlayButtonSelected)
                 {
                     m_isPlayButtonPressed = true;
+                    
                 }
                 if (m_isExitButtonSelected)
                 {
                     m_isExitButtonPressed = true;
                 }
+                break;
+            case sf::Keyboard::Key::Escape:
+                m_context->m_states->PopCurrent();
+                break;
             default:
                 break;
            }
@@ -127,7 +130,7 @@ void MainMenu::ProcessInput()
 }
 
 
-void MainMenu::Update(sf::Time deltaTime) 
+void PauseGame::Update(sf::Time deltaTime) 
 {
     if (m_isPlayButtonSelected)
     {
@@ -142,21 +145,23 @@ void MainMenu::Update(sf::Time deltaTime)
 
     if (m_isPlayButtonPressed)
     {
-        m_isPlayButtonPressed = false; 
-        m_context->m_states->Add(std::make_unique<GamePlay>(m_context), false);
+        // Resume
+        m_context->m_states->PopCurrent();
 
     }
 
     if (m_isExitButtonPressed)
     {
+        //TODO: Make go back to main menu
+        //m_context->m_states->PopMultiple(2); // pop PauseGame
         m_context->m_window->close();
     } 
 }
 
 
-void MainMenu::Draw() 
+void PauseGame::Draw() 
 {
-    m_context->m_window->clear(sf::Color::Green);
+    //m_context->m_window->clear(sf::Color::Green);
     m_context->m_window->draw(*m_gameTitle);
     m_context->m_window->draw(*m_playButton);
     m_context->m_window->draw(*m_exitButton);

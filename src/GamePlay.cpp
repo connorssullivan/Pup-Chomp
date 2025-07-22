@@ -1,12 +1,18 @@
 #include "GamePlay.h"
 #include <string>
+#include <stdlib.h>
+#include <time.h>
+
+#include "GameOver.h"
+#include "PauseGame.h"
+
 
 GamePlay::GamePlay(std::shared_ptr<Context>& context)
 : m_context {context}
 , m_snakeDirection {16, 0}
 , m_elapsedTime {sf::Time::Zero}
 {
-
+    srand(time(nullptr));
 }
 
 GamePlay::~GamePlay()
@@ -91,24 +97,34 @@ void GamePlay::ProcessInput()
         
         else if (event->is<sf::Event::KeyPressed>())
         {
+            sf::Vector2f newDirection = m_snakeDirection;
             const auto& keyEvent = event->getIf<sf::Event::KeyPressed>();
             switch (keyEvent->code)
             {
             case sf::Keyboard::Key::Up:
-                m_snakeDirection = {0.f, -16.f};
+                newDirection = {0.f, -16.f};
                 break;
             case sf::Keyboard::Key::Down:
-                m_snakeDirection = {0.f, 16.f};
+                newDirection = {0.f, 16.f};
                 break;
             case sf::Keyboard::Key::Left:
-                m_snakeDirection = {-16.f, 0.f};
+                newDirection = {-16.f, 0.f};
                 break;
             case sf::Keyboard::Key::Right:
-                m_snakeDirection = {16.f, 0.f};
+                newDirection = {16.f, 0.f};
+                break;
+            case sf::Keyboard::Key::Escape:
+                //TODO: Pause
+                m_context->m_states->Add(std::make_unique<PauseGame>(m_context));
                 break;
             default:
                 break;
            }
+           if (std::abs(m_snakeDirection.x) != std::abs(newDirection.x) ||
+                std::abs(m_snakeDirection.y) != std::abs(newDirection.y))
+            {
+                m_snakeDirection = newDirection;
+            }
         }
         
     }
@@ -120,9 +136,34 @@ void GamePlay::Update(sf::Time deltaTime)
     if (m_elapsedTime.asSeconds() > 0.1)
     {
         m_snake->Move(m_snakeDirection);
+
+        for (auto& wall : m_walls)
+        {
+            if (m_snake->IsOn(wall.value()))
+            {
+            
+                m_context->m_states->Add(std::make_unique<GameOver>(m_context), true);
+                break;
+            }
+        }
+
+        if (m_snake->IsOn(m_food.value()))
+        {
+            m_snake->Grow(m_snakeDirection); 
+            
+            float x { static_cast<float> (rand() % (Config::SCREEN_WIDTH)) };
+            float y { static_cast<float> (rand() % (Config::SCREEN_HEIGHT)) };
+
+            x = std::clamp<int>(rand() % (Config::SCREEN_WIDTH), 16, Config::SCREEN_WIDTH - 2*16);
+            y = std::clamp<int>(rand() % (Config::SCREEN_HEIGHT), 16, Config::SCREEN_HEIGHT - 2*16);
+
+            m_food.value().setPosition({x, y});
+        }
+
         m_elapsedTime = sf::Time::Zero;
     }
 }
+
 
 void GamePlay::Draw()
 {

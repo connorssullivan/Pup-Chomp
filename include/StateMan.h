@@ -11,7 +11,7 @@ namespace Engine
         private:
             bool m_add;
             bool m_replace;
-            bool m_remove;
+            int m_popCount = 0;
 
             std::stack<std::unique_ptr<State>> m_stateStack;
             std::unique_ptr<State> m_newState;
@@ -21,6 +21,7 @@ namespace Engine
 
             void Add(std::unique_ptr<State> toAdd, bool replace = false);
             void PopCurrent();
+            void PopMultiple(int n);
             void ProcessStateChanged();
             std::unique_ptr<Engine::State>& GetCurrent();
     };  
