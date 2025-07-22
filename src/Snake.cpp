@@ -93,3 +93,20 @@ void Snake::draw(sf::RenderTarget& target, sf::RenderStates states) const
             target.draw(*piece, states);
     }
 }
+
+bool Snake::isSelfIntersecting() const
+{
+    bool flag = false;
+
+    for (auto piece = m_body.begin(); piece != m_body.end(); piece++)
+    {
+        if (m_head != piece)
+        {
+            flag = IsOn(piece->value());
+        }
+        if (flag)
+            break;
+    }
+
+    return flag;
+}

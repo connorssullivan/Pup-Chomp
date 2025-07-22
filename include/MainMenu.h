@@ -19,6 +19,7 @@ class MainMenu : public Engine::State
         std::optional<sf::Text> m_gameTitle;
         std::optional<sf::Text> m_playButton;
         std::optional<sf::Text> m_exitButton;
+        std::optional<sf::Sprite> m_background;
 
         bool m_isExitButtonSelected;
         bool m_isExitButtonPressed;

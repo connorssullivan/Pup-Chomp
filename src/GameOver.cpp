@@ -18,8 +18,6 @@ GameOver::GameOver(std::shared_ptr<Context>& context)
 
 void GameOver::Init()
 {
-    std::string fontPath = "assets/fonts/Bitcount_Grid_Double/BitcountGridDouble.ttf";
-    m_context->m_assets->AddFont(MAIN_FONT, fontPath);
 
     const sf::Font& font = m_context->m_assets->getFont(MAIN_FONT);
 
@@ -139,14 +137,14 @@ void GameOver::Update(sf::Time deltaTime)
 
     if (m_isExitButtonPressed)
     {
-        m_context->m_window->close();
+        m_context->m_states->Add(std::make_unique<MainMenu>(m_context), true);
     } 
 }
 
 
 void GameOver::Draw() 
 {
-    m_context->m_window->clear(sf::Color::Green);
+    m_context->m_window->clear(sf::Color::Red);
     m_context->m_window->draw(*m_gameTitle);
     m_context->m_window->draw(*m_playButton);
     m_context->m_window->draw(*m_exitButton);

@@ -11,6 +11,8 @@ GamePlay::GamePlay(std::shared_ptr<Context>& context)
 : m_context {context}
 , m_snakeDirection {16, 0}
 , m_elapsedTime {sf::Time::Zero}
+, m_score {0}
+, m_isPaused {false}
 {
     srand(time(nullptr));
 }
@@ -81,6 +83,10 @@ void GamePlay::Init()
     m_snake.emplace();
     const sf::Texture& snakeTex = m_context->m_assets->getTexture(SNAKE);
     m_snake->Init(dogHeadTex,snakeTex);
+
+    m_scoreText = sf::Text(m_context->m_assets->getFont(MAIN_FONT), "Score: ", 30);
+    m_scoreText->setString("Score: " + std::to_string(m_score));
+
     
 }
 
@@ -114,7 +120,7 @@ void GamePlay::ProcessInput()
                 newDirection = {16.f, 0.f};
                 break;
             case sf::Keyboard::Key::Escape:
-                //TODO: Pause
+                Pause();
                 m_context->m_states->Add(std::make_unique<PauseGame>(m_context));
                 break;
             default:
@@ -132,35 +138,47 @@ void GamePlay::ProcessInput()
 
 void GamePlay::Update(sf::Time deltaTime) 
 {
-    m_elapsedTime += deltaTime;
-    if (m_elapsedTime.asSeconds() > 0.1)
+    if (!m_isPaused)
     {
-        m_snake->Move(m_snakeDirection);
-
-        for (auto& wall : m_walls)
+        m_elapsedTime += deltaTime;
+        if (m_elapsedTime.asSeconds() > 0.1)
         {
-            if (m_snake->IsOn(wall.value()))
+            m_snake->Move(m_snakeDirection);
+
+            // Checking for collision (AKA Game Over)
+            for (auto& wall : m_walls)
             {
-            
-                m_context->m_states->Add(std::make_unique<GameOver>(m_context), true);
-                break;
+                if (m_snake->IsOn(wall.value()))
+                {
+                
+                    m_context->m_states->Add(std::make_unique<GameOver>(m_context), true);
+                    break;
+                }
             }
+
+            if (m_snake->isSelfIntersecting())
+            {
+                m_context->m_states->Add(std::make_unique<GameOver>(m_context), true);
+            }
+
+            // Detect dog eats foof
+            if (m_snake->IsOn(m_food.value()))
+            {
+                m_score++;
+                m_scoreText->setString("Score: " + std::to_string(m_score));
+                m_snake->Grow(m_snakeDirection); 
+                
+                float x { static_cast<float> (rand() % (Config::SCREEN_WIDTH)) };
+                float y { static_cast<float> (rand() % (Config::SCREEN_HEIGHT)) };
+
+                x = std::clamp<int>(rand() % (Config::SCREEN_WIDTH), 16, Config::SCREEN_WIDTH - 2*16);
+                y = std::clamp<int>(rand() % (Config::SCREEN_HEIGHT), 16, Config::SCREEN_HEIGHT - 2*16);
+
+                m_food.value().setPosition({x, y});
+            }
+
+            m_elapsedTime = sf::Time::Zero;
         }
-
-        if (m_snake->IsOn(m_food.value()))
-        {
-            m_snake->Grow(m_snakeDirection); 
-            
-            float x { static_cast<float> (rand() % (Config::SCREEN_WIDTH)) };
-            float y { static_cast<float> (rand() % (Config::SCREEN_HEIGHT)) };
-
-            x = std::clamp<int>(rand() % (Config::SCREEN_WIDTH), 16, Config::SCREEN_WIDTH - 2*16);
-            y = std::clamp<int>(rand() % (Config::SCREEN_HEIGHT), 16, Config::SCREEN_HEIGHT - 2*16);
-
-            m_food.value().setPosition({x, y});
-        }
-
-        m_elapsedTime = sf::Time::Zero;
     }
 }
 
@@ -176,8 +194,8 @@ void GamePlay::Draw()
    }
 
     m_context->m_window->draw(*m_food);
-
     m_context->m_window->draw(*m_snake);
+    m_context->m_window->draw(*m_scoreText);
 
     m_context->m_window->display();
 
@@ -185,10 +203,10 @@ void GamePlay::Draw()
 
 void GamePlay::Pause() 
 {
-
+    m_isPaused = true;
 }
 
 void GamePlay::Start()
 {
-
+    m_isPaused = false;
 }

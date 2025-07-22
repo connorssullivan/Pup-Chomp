@@ -1,4 +1,5 @@
 #include "PauseGame.h"
+#include "GamePlay.h"
 
 
 PauseGame::PauseGame(std::shared_ptr<Context>& context)
@@ -16,8 +17,6 @@ PauseGame::~PauseGame()
 
 void PauseGame::Init() 
 {
-    std::string fontPath = "assets/fonts/Bitcount_Grid_Double/BitcountGridDouble.ttf";
-    m_context->m_assets->AddFont(MAIN_FONT, fontPath);
 
     const sf::Font& font = m_context->m_assets->getFont(MAIN_FONT);
 
@@ -153,8 +152,8 @@ void PauseGame::Update(sf::Time deltaTime)
     if (m_isExitButtonPressed)
     {
         //TODO: Make go back to main menu
-        //m_context->m_states->PopMultiple(2); // pop PauseGame
-        m_context->m_window->close();
+        m_context->m_states->Add(std::make_unique<MainMenu>(m_context), true);
+       //m_context->m_window->close();
     } 
 }
 

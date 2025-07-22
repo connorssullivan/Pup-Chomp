@@ -17,6 +17,21 @@ MainMenu::~MainMenu()
 
 void MainMenu::Init() 
 {
+    //Initalize mane backgroung 
+    std::string bgPath = "assets/textures/gunnie.png";
+    m_context->m_assets->AddTexture(MAIN_BACKGROUND, bgPath);
+    const sf::Texture& mainBGTex = m_context->m_assets->getTexture(MAIN_BACKGROUND);
+    m_background.emplace(mainBGTex);
+
+    // Scale the background to fit the window size
+    sf::Vector2u texSize = mainBGTex.getSize();
+    sf::Vector2u winSize = m_context->m_window->getSize();
+
+    m_background->setScale({
+        static_cast<float>(winSize.x) / texSize.x,
+        static_cast<float>(winSize.y) / texSize.y
+    });
+
     std::string fontPath = "assets/fonts/Bitcount_Grid_Double/BitcountGridDouble.ttf";
     m_context->m_assets->AddFont(MAIN_FONT, fontPath);
 
@@ -25,7 +40,8 @@ void MainMenu::Init()
     // Game Title
     m_gameTitle = sf::Text(font, "Main Menu", 30);
     m_gameTitle->setFont(font);
-    m_gameTitle->setString("Snake Game");
+    m_gameTitle->setString("Guinness Eats The Apple Game");
+    m_gameTitle->setFillColor(sf::Color::Red);
     
     sf::FloatRect bounds = m_gameTitle->getLocalBounds();
 
@@ -131,19 +147,19 @@ void MainMenu::Update(sf::Time deltaTime)
 {
     if (m_isPlayButtonSelected)
     {
-        m_playButton->setFillColor(sf::Color::Yellow);
-        m_exitButton->setFillColor(sf::Color::White);
+        m_playButton->setFillColor(sf::Color::Green);
+        m_exitButton->setFillColor(sf::Color::Black);
     }
     else 
     {
-        m_exitButton->setFillColor(sf::Color::Yellow);
-        m_playButton->setFillColor(sf::Color::White);
+        m_exitButton->setFillColor(sf::Color::Green);
+        m_playButton->setFillColor(sf::Color::Black);
     }
 
     if (m_isPlayButtonPressed)
     {
         m_isPlayButtonPressed = false; 
-        m_context->m_states->Add(std::make_unique<GamePlay>(m_context), false);
+        m_context->m_states->Add(std::make_unique<GamePlay>(m_context), true);
 
     }
 
@@ -157,6 +173,8 @@ void MainMenu::Update(sf::Time deltaTime)
 void MainMenu::Draw() 
 {
     m_context->m_window->clear(sf::Color::Green);
+
+    m_context->m_window->draw(*m_background);
     m_context->m_window->draw(*m_gameTitle);
     m_context->m_window->draw(*m_playButton);
     m_context->m_window->draw(*m_exitButton);

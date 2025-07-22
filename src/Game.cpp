@@ -11,6 +11,16 @@ Game::Game()
     // Set framerate limit 
     m_context->m_window->setFramerateLimit(60);
 
+    // Load music
+    if (!bgMusic.openFromFile("assets/audio/music1.ogg"))
+    {
+        std::cerr <<"Error loading music\n";
+    }else {
+        bgMusic.setLooping(true); // loop forever
+        bgMusic.setVolume(50); // optional: volume between 0 and 100
+        bgMusic.play();
+    }
+
     
     m_context->m_states->Add(std::make_unique<MainMenu>(m_context));
 

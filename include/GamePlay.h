@@ -5,6 +5,7 @@
 
 
 #include <SFML/Graphics/Sprite.hpp>
+#include <SFML/Graphics/Text.hpp>
 
 #include "Config.h"
 #include "State.h"
@@ -17,6 +18,11 @@ class GamePlay : public Engine::State
 {
     private:
         std::shared_ptr<Context> m_context;
+
+        std::optional<sf::Text> m_scoreText;
+        int m_score;
+
+        bool m_isPaused;
 
         std::optional<sf::Sprite> m_grass;
         std::optional<sf::Sprite> m_food;

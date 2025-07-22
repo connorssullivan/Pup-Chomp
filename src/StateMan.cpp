@@ -37,9 +37,11 @@ void Engine::StateMan::ProcessStateChanged()
         --m_popCount;
     }
 
+    // After poping resume new state
     if (!m_stateStack.empty())
         m_stateStack.top()->Start();
 
+    // Pause current state and add new state
     if (m_add)
     {
         if (m_replace && !m_stateStack.empty())

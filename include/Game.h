@@ -6,6 +6,7 @@
 
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 
 #include "Config.h"
 #include "AssetMan.h"
@@ -21,7 +22,8 @@ enum AssetID
     SNAKE,
     DOG_HEAD,
     DOG_TAIL,
-    MAX_ASSET_ID
+    MAIN_BACKGROUND,
+    MAX_ASSET_ID,
 };
 
 struct Context
@@ -43,6 +45,7 @@ class Game
     private:
         std::shared_ptr<Context> m_context;
         const sf::Time TIME_PER_FRAME { sf::seconds(1.f/60.f) }; //Run 60 frames per second
+        sf::Music bgMusic;
 
     public:
         Game();
