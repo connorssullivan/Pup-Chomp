@@ -1,4 +1,4 @@
-# 🐍 Snake Game - C++ SFML Implementation
+# Pup Patrol - 🐍 Snake Game - C++ SFML Implementation
 
 A modern, feature-rich Snake game built with C++ and SFML, demonstrating object-oriented design, state management, and game development principles.
 
