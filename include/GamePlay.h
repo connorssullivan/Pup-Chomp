@@ -6,6 +6,7 @@
 
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Text.hpp>
+#include <SFML/Audio.hpp>
 
 #include "Config.h"
 #include "State.h"
@@ -23,6 +24,7 @@ class GamePlay : public Engine::State
         int m_score;
 
         bool m_isPaused;
+        sf::Music bgSound;
 
         std::optional<sf::Sprite> m_grass;
         std::optional<sf::Sprite> m_food;

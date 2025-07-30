@@ -15,6 +15,12 @@ GamePlay::GamePlay(std::shared_ptr<Context>& context)
 , m_isPaused {false}
 {
     srand(time(nullptr));
+
+    if (!bgSound.openFromFile("assets/audio/bite.ogg")){
+        std::cerr << "Failed to load bite \n";
+    }else{
+        bgSound.setVolume(100);
+    }
 }
 
 GamePlay::~GamePlay()
@@ -164,6 +170,7 @@ void GamePlay::Update(sf::Time deltaTime)
             // Detect dog eats foof
             if (m_snake->IsOn(m_food.value()))
             {
+                bgSound.play();
                 m_score++;
                 m_scoreText->setString("Score: " + std::to_string(m_score));
                 m_snake->Grow(m_snakeDirection); 
