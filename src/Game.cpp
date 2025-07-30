@@ -6,7 +6,7 @@ Game::Game()
 : m_context { std::make_shared<Context>() }
 {
 
-    m_context->m_window->create(sf::VideoMode({Config::SCREEN_WIDTH, Config::SCREEN_HEIGHT}), "Snake Game", sf::Style::Close);
+    m_context->m_window->create(sf::VideoMode({Config::SCREEN_WIDTH, Config::SCREEN_HEIGHT}), "Pup Chomp", sf::Style::Close);
     
     // Set framerate limit 
     m_context->m_window->setFramerateLimit(60);

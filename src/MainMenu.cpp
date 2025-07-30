@@ -40,7 +40,7 @@ void MainMenu::Init()
     // Game Title
     m_gameTitle = sf::Text(font, "Main Menu", 30);
     m_gameTitle->setFont(font);
-    m_gameTitle->setString("Guinness Eats The Apple Game");
+    m_gameTitle->setString("Pup Chomp");
     m_gameTitle->setFillColor(sf::Color::Red);
     
     sf::FloatRect bounds = m_gameTitle->getLocalBounds();

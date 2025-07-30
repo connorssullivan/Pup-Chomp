@@ -1,102 +1,173 @@
-# CMake SFML Project Template
+# 🐍 Snake Game - C++ SFML Implementation
 
-This repository template should allow for a fast and hassle-free kick start of your next SFML project using CMake.
-Thanks to [GitHub's nature of templates](https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-repository-from-a-template), you can fork this repository without inheriting its Git history.
+A modern, feature-rich Snake game built with C++ and SFML, demonstrating object-oriented design, state management, and game development principles.
 
-The template starts out very basic, but might receive additional features over time:
+![Snake Game](https://img.shields.io/badge/C++-20-blue?style=for-the-badge&logo=cplusplus)
+![SFML](https://img.shields.io/badge/SFML-3.0.1-green?style=for-the-badge)
+![CMake](https://img.shields.io/badge/CMake-3.28-orange?style=for-the-badge&logo=cmake)
+![License](https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge)
 
-- Basic CMake script to build your project and link SFML on any operating system
-- Basic [GitHub Actions](https://github.com/features/actions) script for all major platforms
+## 🎮 Features
 
-## How to Use
+- **Classic Snake Gameplay**: Navigate, collect food, and grow your snake
+- **State Management System**: Clean separation between menu, gameplay, pause, and game over states
+- **Asset Management**: Centralized resource loading and management
+- **Modern C++**: Utilizes C++20 features including smart pointers and modern STL containers
+- **Cross-Platform**: Built with CMake for easy compilation on Windows, macOS, and Linux
+- **Audio Integration**: Background music and sound effects
+- **Responsive Controls**: Smooth keyboard input handling
 
-1. Install [Git](https://git-scm.com/downloads) and [CMake](https://cmake.org/download/). Use your system's package manager if available.
-2. Follow [GitHub's instructions](https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-repository-from-a-template) for how to use their project template feature to create your own project. If you don't want to use GitHub, see the section below.
-3. Clone your new GitHub repo and open the repo in your text editor of choice.
-4. Open [CMakeLists.txt](CMakeLists.txt). Rename the project and the target name of the executable to whatever name you want. Make sure to change all occurrences.
-5. If you want to add or remove any .cpp files, change the source files listed in the `add_executable` call in CMakeLists.txt to match the source files your project requires. If you plan on keeping the default main.cpp file then no changes are required.
-6. If your code uses the Audio or Network modules then add `SFML::Audio` or `SFML::Network` to the `target_link_libraries` call alongside the existing `SFML::Graphics` library that is being linked.
-7. If you use Linux, install SFML's dependencies using your system package manager. On Ubuntu and other Debian-based distributions you can use the following commands:
+## 🏗️ Architecture
+
+### Core Components
+
+- **Game Engine**: Main game loop with 60 FPS frame rate
+- **State Machine**: Manages different game states (Menu, Play, Pause, Game Over)
+- **Asset Manager**: Handles texture, font, and audio loading
+- **Snake Class**: Implements snake movement, growth, and collision detection
+- **Input System**: Keyboard event handling and input processing
+
+### Design Patterns
+
+- **State Pattern**: Clean separation of game states
+- **Resource Manager Pattern**: Centralized asset management
+- **Component-Based Design**: Modular, reusable game objects
+- **RAII**: Proper resource management with smart pointers
+
+## 🛠️ Technical Stack
+
+- **Language**: C++20
+- **Graphics Library**: SFML 3.0.1
+- **Build System**: CMake 3.28
+- **Audio**: SFML Audio module
+- **Platform**: Cross-platform (Windows, macOS, Linux)
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- C++20 compatible compiler (GCC 10+, Clang 12+, MSVC 2019+)
+- CMake 3.28 or higher
+- Git
+
+### Installation
+
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/connorssullivan/Pup-Chomp.git
+   cd Pup-Chomp
    ```
-   sudo apt update
-   sudo apt install \
-       libxrandr-dev \
-       libxcursor-dev \
-       libxi-dev \
-       libudev-dev \
-       libfreetype-dev \
-       libflac-dev \
-       libvorbis-dev \
-       libgl1-mesa-dev \
-       libegl1-mesa-dev \
-       libfreetype-dev
-   ```
-8. Configure and build your project. Most popular IDEs support CMake projects with very little effort on your part.
 
-   - [VS Code](https://code.visualstudio.com) via the [CMake extension](https://code.visualstudio.com/docs/cpp/cmake-linux)
-   - [Visual Studio](https://docs.microsoft.com/en-us/cpp/build/cmake-projects-in-visual-studio?view=msvc-170)
-   - [CLion](https://www.jetbrains.com/clion/features/cmake-support.html)
-   - [Qt Creator](https://doc.qt.io/qtcreator/creator-project-cmake.html)
-
-   Using CMake from the command line is straightforward as well.
-   Be sure to run these commands in the root directory of the project you just created.
-
-   ```
+2. **Build the project**
+   ```bash
    cmake -B build
    cmake --build build
-   ./build/bin/main  
    ```
 
-9. Enjoy!
+3. **Run the game**
+   ```bash
+   ./build/bin/main
+   ```
 
-## Upgrading SFML
+### Development Setup
 
-SFML is found via CMake's [FetchContent](https://cmake.org/cmake/help/latest/module/FetchContent.html) module.
-FetchContent automatically downloads SFML from GitHub and builds it alongside your own code.
-Beyond the convenience of not having to install SFML yourself, this ensures ABI compatibility and simplifies things like specifying static versus shared libraries.
+For different IDEs:
 
-Modifying what version of SFML you want is as easy as changing the `GIT_TAG` argument.
-Currently it uses SFML 3 via the `3.0.0` tag.
+- **VS Code**: Install CMake extension and open the project
+- **Visual Studio**: Open CMakeLists.txt as a CMake project
+- **CLion**: Open the project directory
+- **Qt Creator**: Open CMakeLists.txt
 
-## But I want to...
+## 📁 Project Structure
 
-Modify CMake options by adding them as configuration parameters (with a `-D` flag) or by modifying the contents of CMakeCache.txt and rebuilding.
+```
+Snake/
+├── assets/                 # Game resources
+│   ├── audio/             # Sound effects and music
+│   ├── fonts/             # Custom fonts
+│   └── textures/          # Game sprites and images
+├── include/               # Header files
+│   ├── Game.h            # Main game class
+│   ├── StateMan.h        # State management
+│   ├── AssetMan.h        # Asset management
+│   ├── Snake.h           # Snake game object
+│   └── ...               # Other game components
+├── src/                   # Source files
+│   ├── main.cpp          # Entry point
+│   ├── Game.cpp          # Game implementation
+│   ├── Snake.cpp         # Snake logic
+│   └── ...               # Other implementations
+└── CMakeLists.txt        # Build configuration
+```
 
-### Not use GitHub
+## 🎯 Key Implementation Details
 
-You can use this project without a GitHub account by [downloading the contents](https://github.com/SFML/cmake-sfml-project/archive/refs/heads/master.zip) of the repository as a ZIP archive and unpacking it locally.
-This approach also avoids using Git entirely if you would prefer to not do that.
+### State Management
+The game uses a state machine pattern to manage different game phases:
+- **MainMenu**: Title screen with navigation
+- **GamePlay**: Active gameplay with snake movement and collision detection
+- **PauseGame**: Paused state with resume/quit options
+- **GameOver**: End game screen with score display
 
-### Change Compilers
+### Snake Implementation
+- Uses `std::list` for efficient body segment management
+- Implements collision detection with walls and self
+- Growth mechanism with proper segment addition
+- Smooth movement with direction-based controls
 
-See the variety of [`CMAKE_<LANG>_COMPILER`](https://cmake.org/cmake/help/latest/variable/CMAKE_LANG_COMPILER.html) options.
-In particular you'll want to modify `CMAKE_CXX_COMPILER` to point to the C++ compiler you wish to use.
+### Asset Management
+- Centralized resource loading and caching
+- Texture and audio management with RAII principles
+- Memory-efficient resource handling
 
-### Change Compiler Optimizations
+## 🔧 Development Practices
 
-CMake abstracts away specific optimizer flags through the [`CMAKE_BUILD_TYPE`](https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html) option.
-By default this project recommends `Release` builds which enable optimizations.
-Other build types include `Debug` builds which enable debug symbols but disable optimizations.
-If you're using a multi-configuration generator (as is often the case on Windows), you can modify the [`CMAKE_CONFIGURATION_TYPES`](https://cmake.org/cmake/help/latest/variable/CMAKE_CONFIGURATION_TYPES.html#variable:CMAKE_CONFIGURATION_TYPES) option.
+- **Modern C++**: Utilizes C++20 features and best practices
+- **Memory Safety**: Smart pointers and RAII for resource management
+- **Clean Architecture**: Separation of concerns and modular design
+- **Cross-Platform**: CMake-based build system for portability
+- **Version Control**: Proper Git workflow and commit history
 
-### Change Generators
+## 🎨 Customization
 
-While CMake will attempt to pick a suitable default generator, some systems offer a number of generators to choose from.
-Ubuntu, for example, offers Makefiles and Ninja as two potential options.
-For a list of generators, click [here](https://cmake.org/cmake/help/latest/manual/cmake-generators.7.html).
-To modify the generator you're using you must reconfigure your project providing a `-G` flag with a value corresponding to the generator you want.
-You can't simply modify an entry in the CMakeCache.txt file unlike the above options.
-Then you may rebuild your project with this new generator.
+### Adding New Features
+1. Create new state classes inheriting from `State`
+2. Add assets to the `AssetID` enum
+3. Implement game logic in appropriate classes
+4. Update CMakeLists.txt for new source files
 
-## More Reading
+### Modifying Gameplay
+- Adjust snake speed in `Game.cpp`
+- Modify collision detection in `Snake.cpp`
+- Add new game mechanics in `GamePlay.cpp`
 
-Here are some useful resources if you want to learn more about CMake:
+## 📊 Performance Considerations
 
-- [Official CMake Tutorial](https://cmake.org/cmake/help/latest/guide/tutorial/)
-- [How to Use CMake Without the Agonizing Pain - Part 1](https://alexreinking.com/blog/how-to-use-cmake-without-the-agonizing-pain-part-1.html)
-- [How to Use CMake Without the Agonizing Pain - Part 2](https://alexreinking.com/blog/how-to-use-cmake-without-the-agonizing-pain-part-2.html)
-- [Better CMake YouTube series by Jefferon Amstutz](https://www.youtube.com/playlist?list=PL8i3OhJb4FNV10aIZ8oF0AA46HgA2ed8g)
+- 60 FPS target frame rate
+- Efficient collision detection algorithms
+- Memory-efficient asset management
+- Optimized rendering pipeline
 
-## License
+## 🤝 Contributing
 
-The source code is dual licensed under Public Domain and MIT -- choose whichever you prefer.
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+## 📝 License
+
+This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.
+
+## 🙏 Acknowledgments
+
+- SFML team for the excellent graphics library
+- CMake community for the build system
+- Open source contributors for inspiration
+
+---
+
+**Built with ❤️ using C++ and SFML**
+
+*This project demonstrates strong C++ programming skills, game development principles, and software engineering best practices suitable for software engineering positions.*
