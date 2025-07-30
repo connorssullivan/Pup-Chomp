@@ -1,5 +1,7 @@
 # 🐶 Pup Chomp - 🐍 Snake Game - C++ SFML Implementation
 
+![pupChomp](https://github.com/user-attachments/assets/1c52dee4-92d4-4dff-9416-8be97f5e338c)
+
 A modern, feature-rich Snake game built with C++ and SFML, demonstrating object-oriented design, state management, and game development principles.
 
 ![Snake Game](https://img.shields.io/badge/C++-20-blue?style=for-the-badge&logo=cplusplus)
