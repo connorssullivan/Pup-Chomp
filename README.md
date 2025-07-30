@@ -1,4 +1,4 @@
-# Pup Patrol - 🐍 Snake Game - C++ SFML Implementation
+# 🐶 Pup Chomp - 🐍 Snake Game - C++ SFML Implementation
 
 A modern, feature-rich Snake game built with C++ and SFML, demonstrating object-oriented design, state management, and game development principles.
 
@@ -148,13 +148,6 @@ The game uses a state machine pattern to manage different game phases:
 - Memory-efficient asset management
 - Optimized rendering pipeline
 
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
 
 ## 📝 License
 
@@ -164,10 +157,10 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 - SFML team for the excellent graphics library
 - CMake community for the build system
-- Open source contributors for inspiration
+
 
 ---
 
-**Built with ❤️ using C++ and SFML**
+**Built with C++ and SFML**
 
 *This project demonstrates strong C++ programming skills, game development principles, and software engineering best practices suitable for software engineering positions.*
